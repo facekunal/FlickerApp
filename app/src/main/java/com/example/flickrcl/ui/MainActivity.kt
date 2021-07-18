@@ -4,10 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 
-
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import com.example.flickrcl.R
+import com.example.flickrcl.adapter.PhotoLoadStateAdapter
 import com.example.flickrcl.adapter.PhotosListAdapter
 import com.example.flickrcl.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,11 +24,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val adapter = PhotosListAdapter()
+        binding.apply {
+            photoList.setHasFixedSize(true)
+            photoList.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = PhotoLoadStateAdapter { adapter.retry() },
+                footer = PhotoLoadStateAdapter { adapter.retry() },
+            )
+        }
+
         viewModel.photos.observe(this) {
             adapter.submitData(this.lifecycle, it)
         }
-
-        binding.photoList.adapter = adapter
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -52,5 +58,4 @@ class MainActivity : AppCompatActivity() {
         })
         return true
     }
-
 }
