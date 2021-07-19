@@ -18,7 +18,6 @@ class PhotoLoadStateAdapter(private val retry : () -> Unit) :
             parent,
             false
         )
-
         return ViewHolder(binding)
     }
 

@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.21388888888888888" />
         <entry key="app/src/main/res/drawable/ic_photo_error.xml" value="0.21388888888888888" />
         <entry key="app/src/main/res/drawable/img_error.xml" value="0.21388888888888888" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/item_photo.xml" value="0.5" />
         <entry key="app/src/main/res/layout/photo_load_state_footer.xml" value="0.33" />
         <entry key="app/src/main/res/menu/menu.xml" value="0.5" />

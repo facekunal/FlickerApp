@@ -6,6 +6,8 @@ import android.view.Menu
 
 import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.paging.LoadState
 import com.example.flickrcl.R
 import com.example.flickrcl.adapter.PhotoLoadStateAdapter
 import com.example.flickrcl.adapter.PhotosListAdapter
@@ -25,11 +27,34 @@ class MainActivity : AppCompatActivity() {
 
         val adapter = PhotosListAdapter()
         binding.apply {
-            photoList.setHasFixedSize(true)
             photoList.adapter = adapter.withLoadStateHeaderAndFooter(
                 header = PhotoLoadStateAdapter { adapter.retry() },
                 footer = PhotoLoadStateAdapter { adapter.retry() },
             )
+            photoList.setHasFixedSize(true)
+            photoList.itemAnimator = null
+            buttonRetry.setOnClickListener {
+                adapter.retry()
+            }
+        }
+
+        adapter.addLoadStateListener {
+            binding.apply {
+                progressBar.isVisible = it.source.refresh is LoadState.Loading
+                photoList.isVisible = it.source.refresh is LoadState.NotLoading
+                buttonRetry.isVisible = it.source.refresh is LoadState.Error
+                textViewError.isVisible = it.source.refresh is LoadState.Error
+
+                // No results
+                if(it.source.refresh is LoadState.NotLoading &&
+                    it.append.endOfPaginationReached &&
+                    adapter.itemCount < 1) {
+                    photoList.isVisible = false
+                    textViewEmpty.isVisible = true
+                } else {
+                    textViewEmpty.isVisible = false
+                }
+            }
         }
 
         viewModel.photos.observe(this) {
